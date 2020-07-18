@@ -33,6 +33,7 @@ h1 {
     align-content: center;
     justify-items: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .board {
