@@ -46,7 +46,6 @@ h1 {
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3, auto);
-    z-index: -1;
 }
 
 .cell {
