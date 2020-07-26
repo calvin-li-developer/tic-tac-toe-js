@@ -23,6 +23,7 @@ h1 {
     width: 100vw;
     padding-bottom: 3vh;
     margin: 0;
+    z-index: -1;
 }
 
 .content {
@@ -45,6 +46,7 @@ h1 {
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3, auto);
+    z-index: -1;
 }
 
 .cell {
@@ -131,6 +133,7 @@ h1 {
     color: white;
     font-size: 5rem;
     flex-direction: column;
+    z-index: 2;
 }
 
 .winning-message button {
@@ -159,4 +162,5 @@ p {
     padding-top: 3vh;
     font-weight: bold;
     font-size: 18px;
+    z-index: -1;
 }
