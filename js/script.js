@@ -16,6 +16,14 @@ const board = document.getElementById('board');
 const winningMessageElement = document.getElementById('winning-message');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 const restartButton = document.getElementById('restartButton');
+
+const player2Button = document.getElementById('player2');
+const computerButton = document.getElementById('computer');
+const gameModeText = document.querySelector('[game-mode]');
+const gameModeSelector = document.getElementById("mode-selector");
+
+let vsComputer;
+
 let circleTurn;
 
 function startGame() {
@@ -30,13 +38,123 @@ function startGame() {
     winningMessageElement.classList.remove('show');
 }
 
+function setComputerMode()
+{
+    vsComputer = true;
+    gameModeSelector.classList.add('hide');
+    board.classList.add('show');
+    gameModeText.innerHTML += " vs COMPUTER";
+}
+
+function setPlayerMode()
+{
+    vsComputer = false;
+    gameModeSelector.classList.add('hide');
+    board.classList.add('show');
+    gameModeText.innerHTML += " vs PLAYER2";
+}
+
 function handleClick(e) {
-    const cell = e.target;
-    const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
 
-    placeMark(cell, currentClass);
+    if (vsComputer)
+    {
+        const cell = e.target;
+        
+        if (circleTurn == false)
+        {
+            if (!cell.classList.contains("circle"))
+            {
+                placeMark(cell, X_CLASS);
 
-    if (checkWin(currentClass)) {
+                gameNotify(X_CLASS);
+            }
+        }
+        if (circleTurn == true)
+        {   
+            oPlaced = false
+            for (let i = 0; i < cellElements.length; i++) {
+                selected_cell = cellElements[i]
+                if (!selected_cell.classList.contains("x") && !selected_cell.classList.contains("circle"))
+                {
+                    placeMark(selected_cell, CIRCLE_CLASS);
+                    if (checkWin(CIRCLE_CLASS))
+                    {
+                        gameNotify(CIRCLE_CLASS);
+                        oPlaced = true
+                        break
+                    }
+                    else
+                    {
+                        selected_cell.classList.remove(CIRCLE_CLASS);
+                    }
+                }
+            }
+
+            if (oPlaced == false)
+            {
+                for (let i = 0; i < cellElements.length; i++) {
+                    selected_cell = cellElements[i]
+                    if (!selected_cell.classList.contains("x") && !selected_cell.classList.contains("circle"))
+                    {
+                        placeMark(selected_cell, X_CLASS);
+                        if (checkWin(X_CLASS))
+                        {
+                            selected_cell.classList.remove(X_CLASS);
+                            placeMark(selected_cell, CIRCLE_CLASS);
+                            gameNotify(CIRCLE_CLASS);
+                            oPlaced = true
+                            break
+                        }
+                        else
+                        {
+                            selected_cell.classList.remove(X_CLASS);
+                        }
+                    }
+                }
+            }
+
+            if (oPlaced == false)
+            {
+                generateMove();
+            }
+        }
+    }
+    else
+    {
+        const cell = e.target;
+        const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
+
+        placeMark(cell, currentClass);
+
+        if (checkWin(currentClass)) {
+            endGame(false);
+        } else if (isDraw()) {
+            endGame(true);
+        }
+        else {
+            swapTurns();
+            setBoardHoverClass();
+        }
+    }
+}
+
+function generateMove()
+{
+    value = Math.floor(Math.random()*cellElements.length)
+    rand_cell = cellElements[value]
+
+    while (rand_cell.classList.contains("x") || rand_cell.classList.contains("circle"))
+    {
+        value = Math.floor(Math.random()*cellElements.length)
+        rand_cell = cellElements[value]
+    }
+    placeMark(rand_cell, CIRCLE_CLASS);
+    gameNotify(CIRCLE_CLASS);
+}
+
+function gameNotify(playerClass)
+{
+    if (checkWin(playerClass)) {
         endGame(false);
     } else if (isDraw()) {
         endGame(true);
@@ -90,5 +208,7 @@ function isDraw() {
 }
 
 restartButton.addEventListener('click', startGame);
+computerButton.addEventListener('click', setComputerMode);
+player2Button.addEventListener('click', setPlayerMode);
 
 startGame();
