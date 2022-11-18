@@ -43,7 +43,7 @@ function setComputerMode()
     vsComputer = true;
     gameModeSelector.classList.add('hide');
     board.classList.add('show');
-    gameModeText.innerHTML = " vs " + "COMPUTER";
+    gameModeText.innerHTML = gameModeText.innerHTML + " vs " + "COMPUTER";
 }
 
 function setPlayerMode()
@@ -51,7 +51,7 @@ function setPlayerMode()
     vsComputer = false;
     gameModeSelector.classList.add('hide');
     board.classList.add('show');
-    gameModeText.innerHTML = " vs " + "PLAYER 2";
+    gameModeText.innerHTML = gameModeText.innerHTML + " vs " + "PLAYER 2";
 }
 
 function handleClick(e) {
